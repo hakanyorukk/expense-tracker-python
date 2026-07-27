@@ -4,7 +4,7 @@ Python command line expense tracker application.
 
 ## Features
 - Add, list, and delete expenses (amount, category, description, date)
-- Stroes date as a JSON file
+- Saves data to a JSON file
 - Spending reports: total, average, breakdown by category, biggest expense
 - Input validation with custom exceptions
 
