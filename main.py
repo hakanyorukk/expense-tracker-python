@@ -9,7 +9,7 @@ def main():
     tracker.load_from_file()
 
     while True:
-        print("add / list / report / delete / quit")
+        print("add / list / report / delete / quit / summary")
         choice = input("> ").lower()
 
         if choice == "quit":
@@ -48,6 +48,9 @@ def main():
                     print("No expense with that number")
             except ValueError:
                     print("Please enter a number")
+
+        elif choice == "summary":
+            print(tracker.summary())
 
 if __name__ == "__main__":
     main()

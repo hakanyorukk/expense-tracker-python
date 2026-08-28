@@ -50,11 +50,6 @@ class Expense:
     def __hash__(self):
         return hash((self.amount, self.category, self.date))
 
-    @classmethod
-    def from_line(cls, line):
-        expense = line.split()
-
-
 if __name__ == "__main__":
     e = Expense(12.50, "food", "lunch")
     print(e)
