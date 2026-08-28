@@ -50,10 +50,14 @@ class Expense:
     def __hash__(self):
         return hash((self.amount, self.category, self.date))
 
-if __name__ == "__main__":
-    e = Expense(12.50, "food", "lunch")
-    print(e)
-    try:
-        bad = Expense(-5, "food")
-    except InvalidExpenseError as error:
-        print(error)
+    @classmethod
+    def from_line(cls, line):
+        try:
+            amount, category, description, date = line.split(",")
+            amount = float(amount.strip())
+            category = category.strip()
+            description = description.strip()
+            date = date_type.fromisoformat(date.strip())
+        except ValueError as e:
+            raise InvalidExpenseError(f"bad line: {line.strip()!r}") from e
+        return cls(amount,category,description,date)
