@@ -9,7 +9,7 @@ def main():
     tracker.load_from_file()
 
     while True:
-        print("add / list / report / delete / quit / summary")
+        print("add / list / report / delete / quit / summary / import")
         choice = input("> ").lower()
 
         if choice == "quit":
@@ -51,6 +51,18 @@ def main():
 
         elif choice == "summary":
             print(tracker.summary())
+
+        elif choice == "import":
+            path = input("File: ")
+            try:
+                with open(path, encoding="utf-8") as file:
+                    added, errors = tracker.import_from_text(file)
+                tracker.save_to_file()
+                print(f"Imported {added}, skipped {len(errors)}")
+                for err in errors:
+                    print("  ", err)
+            except FileNotFoundError:
+                print(f"No such file: {path}")
 
 if __name__ == "__main__":
     main()

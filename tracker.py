@@ -1,7 +1,8 @@
 from collections import defaultdict, Counter
 from datetime import date
 
-from expense import Expense
+from expense import Expense, InvalidExpenseError
+
 
 class ExpenseTracker:
     def __init__(self, storage):
@@ -128,4 +129,17 @@ class ExpenseTracker:
                "by month": self.by_month(),
                "total by month": self.total_by_month()}
 
-
+    def import_from_text(self, lines):
+        added = 0
+        errors = []
+        for line in lines:
+            if not line.strip():
+                continue
+            try:
+                valid_line = Expense.from_line(line)
+                added+=1
+            except InvalidExpenseError as e:
+                errors.append(str(e))
+            else:
+                self.add_expense(valid_line)
+        return added, errors
