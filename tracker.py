@@ -1,3 +1,4 @@
+from collections import defaultdict, Counter
 from datetime import date
 
 from expense import Expense
@@ -87,4 +88,44 @@ class ExpenseTracker:
     def list_with_index(self):
         for i, expense in enumerate(self.expenses):
             print(f"{i}: {expense}")
+
+
+    def sorted_by_amount(self, descending=True):
+        return sorted(self.expenses, key=lambda e: e.amount, reverse=descending)
+
+    def sorted_by_date(self):
+        return sorted(self.expenses, key=lambda e: e.date)
+
+    def sorted_by_category_then_amount(self):
+        return sorted(self.expenses, key=lambda i: (i.category, -i.amount))
+
+    def count_by_category(self):
+        return dict(Counter(e.category for e in self.expenses))
+
+    def most_common_categories(self, n=3):
+         return Counter(e.category for e in self.expenses).most_common(n)
+
+    def by_month(self):
+        by_month_list = defaultdict(list)
+        for e in self.expenses:
+            expense_date = f"{e.date.year}-{e.date.month:02d}"
+            by_month_list[expense_date].append(e)
+        return dict(by_month_list)
+
+    def total_by_month(self):
+        totals = defaultdict(float)
+        for e in self.expenses:
+            expense_month = f"{e.date.year}-{e.date.month:02d}"
+            totals[expense_month] += e.amount
+        return dict(totals)
+
+    def summary(self):
+        return {"sorted by amount": self.sorted_by_amount(),
+               "sorted by date": self.sorted_by_date(),
+               "sorted by category": self.sorted_by_category_then_amount(),
+               "count by category": self.count_by_category(),
+               "most common categories": self.most_common_categories(),
+               "by month": self.by_month(),
+               "total by month": self.total_by_month()}
+
 
